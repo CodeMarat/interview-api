@@ -6,6 +6,7 @@ use App\Http\Requests\UserRequest;
 use App\Repository\UserRepository;
 use App\Resources\UserResource;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ApiController extends Controller
 {
@@ -30,11 +31,18 @@ class ApiController extends Controller
         ], $status);
     }
 
-    public function users()
+    /**
+     * @return AnonymousResourceCollection
+     */
+    public function users(): AnonymousResourceCollection
     {
         return UserResource::collection($this->userRepository->showAllUsers());
     }
 
+    /**
+     * @param int $id
+     * @return UserResource
+     */
     public function profile(int $id): UserResource
     {
         return UserResource::make($this->userRepository->showUser($id));
